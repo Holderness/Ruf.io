@@ -21,11 +21,9 @@ var Server = function(options) {
         socket.emit('loginNameBad', username);
         return;
       }
-
-      var nameExists = _.some(self.users, function(item) {
-        return item.user == username;
+      var nameExists = _.some(self.users, function(user) {
+        return user.user == username;
       });
-
       if (nameExists) {
         socket.emit("loginNameExists", username);
       } else {
@@ -46,14 +44,12 @@ var Server = function(options) {
       self.users.splice(self.users.indexOf(user), 1);
       self.io.sockets.emit("userLeft", user.user);
     });
-
     user.socket.on("onlineUsers", function() {
-      var users = _.map(self.users, function(item) {
-        return item.user;
+      var users = _.map(self.users, function(user) {
+        return user.user;
       });
       user.socket.emit("onlineUsers", users);
     });
-
     user.socket.on("chat", function(chat) {
       if (chat) {
         self.io.sockets.emit("chat", { sender: user.user, message: chat });
