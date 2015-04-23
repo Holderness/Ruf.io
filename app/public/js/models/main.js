@@ -7,6 +7,7 @@ var ChatModel = Backbone.Model.extend({});
 var ChatCollection = Backbone.Collection.extend({model: ChatModel});
 
 var HomeModel = Backbone.Model.extend({
+  //sets default attributes
   defaults: {
     onlineUsers: new UserCollection(),
     userChats: new ChatCollection([
@@ -14,6 +15,7 @@ var HomeModel = Backbone.Model.extend({
       ])
   },
   addUser: function(username) {
+    //gets UserCollection from defaults, adds UserModel
     this.get('onlineUsers').add(new UserModel({ name: username }));
     console.log("--adding-user---");
     console.log(this.get('onlineUsers').add(new UserModel({ name: username })));
@@ -21,16 +23,19 @@ var HomeModel = Backbone.Model.extend({
   },
   removeUser: function(username) {
     var onlineUsers = this.get('onlineUsers');
+    // iterates through UserCollection (online users), finds UserModel, removes UserModel
     var u = onlineUsers.find(function(item) { return item.get('name') == username; });
     if (u) {
       onlineUsers.remove(u);
     }
   },
   addChat: function(chat) {
+    // gets UserChats collection (messages) from defaults, adds new ChatModel (message)
     this.get('userChats').add(new ChatModel({ sender: chat.sender, message: chat.message }));
   },
 });
 
+// LoginModel?
 var LoginModel = Backbone.Model.extend({
   defaults: {
     error: ""
