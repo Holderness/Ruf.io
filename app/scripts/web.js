@@ -12,7 +12,6 @@ var socketio = require('socket.io');
 
 // routes
 var routes = require('../routes/index.js');
-// routes === { index: [Function] }
 
 // sets view folder to 'views'
 app.set('views', path.join(__dirname, '../views'));
@@ -20,7 +19,14 @@ app.set('views', path.join(__dirname, '../views'));
 // middleware
 app.use(app.router);
 app.use(express.static(path.join(__dirname, '../public')));
+
 app.use(routes.index);
+// routes === { index: [Function] }
+// the index key comes from exports.index in the routes/index,
+// the Function is a node method:
+// fs.readFile --> public/index.html
+
+
 
 // server
 var server = http.createServer(app);
