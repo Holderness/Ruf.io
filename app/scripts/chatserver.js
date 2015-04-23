@@ -40,7 +40,7 @@ var Server = function(options) {
         socket.emit("loginNameExists", username);
       } else {
 
-        // if username does not exist, create user
+        // if username does not exist, create user, passes in user name and the socket
         var newUser = new User({ user: username, socket: socket });
 
         //push users to user to online user array
@@ -65,7 +65,8 @@ var Server = function(options) {
       self.io.sockets.emit("userLeft", user.user);
     });
 
-    
+    // listens to the 'onlineUsers' event, updates the online users array on
+    // a change from the client.
     user.socket.on("onlineUsers", function() {
       // creates new array of online usernames, stores in var users
       var users = _.map(self.users, function(user) {
@@ -74,6 +75,10 @@ var Server = function(options) {
       // emits new online usernames array to client
       user.socket.emit("onlineUsers", users);
     });
+
+    // another recursive function, listening for a 'chat' event from client,
+    // if there is a chat event, emit an object containing the username
+    // and chat message to all the other sockets.
     user.socket.on("chat", function(chat) {
       if (chat) {
         self.io.sockets.emit("chat", { sender: user.user, message: chat });
@@ -90,7 +95,7 @@ var User = function(args) {
   self.user = args.user;
 };
 
-
+// allows export to chatserver.js
 module.exports = Server;
 
 
