@@ -9,6 +9,8 @@ var MainController = function() {
 	self.appEventBus = _.extend({}, Backbone.Events);
 	self.viewEventBus = _.extend({}, Backbone.Events);
 	self.init = function() {
+
+		// creates ChatClient from socketclient.js
 		self.chatClient = new ChatClient({ vent: self.appEventBus });
 		self.chatClient.connect();
 		self.loginModel = new LoginModel();
