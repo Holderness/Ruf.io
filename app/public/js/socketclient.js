@@ -52,7 +52,7 @@ var ChatClient = function(options) {
 
 
 		socket.on('loginNameExists', function(data) {
-		  // data === string of used username
+      // data === string of used username
 			console.log('loginNameExists: ');
 			console.log(data);
 			self.vent.trigger("loginNameExists", data);
@@ -73,7 +73,7 @@ var ChatClient = function(options) {
 			console.log(data);
 			self.vent.trigger("usersInfo", data);
 		});
-		
+
 		socket.on('userJoined', function(data) {
 			// data === username of user joined
 			console.log('userJoined: ');

@@ -15,7 +15,7 @@ var HomeModel = Backbone.Model.extend({
       ])
   },
   addUser: function(username) {
-    //gets UserCollection from defaults, adds UserModel
+    //gets UserCollection from defaults above, adds UserModel
     this.get('onlineUsers').add(new UserModel({ name: username }));
     console.log("--adding-user---");
     console.log(this.get('onlineUsers').add(new UserModel({ name: username })));
@@ -35,7 +35,7 @@ var HomeModel = Backbone.Model.extend({
   },
 });
 
-// LoginModel?
+// LoginModel
 var LoginModel = Backbone.Model.extend({
   defaults: {
     error: ""
