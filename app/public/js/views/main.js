@@ -1,3 +1,8 @@
+
+// ContainerView holds specific views, which in turn hold different templates.
+// At any given time the containerview holds state of the given view, the 
+// viewState. As the app functions, views are switched in and out of the 
+// viewState and rendered.
 var ContainerView = Backbone.View.extend({
 	el: '#container',
 	initialize: function(options) {
@@ -15,11 +20,18 @@ var LoginView = Backbone.View.extend({
 		'click #nameBtn': 'onLogin'
 	},
 	initialize: function(options) {
+		// gets passed the viewEventBus when the MainController is initialized
 		this.vent = options.vent;
+		// telling the view to listen to an event on its model,
+		// if there's an error, the callback (this.render) is called with the  
+		// view as context
 		this.listenTo(this.model, "change:error", this.render, this);
 	},
 	render: function() {
 		this.$el.html(this.template(this.model.toJSON()));
+		//so, this is Ladda, a UI component for form buttons.
+		// Ladda incorporates the spinning wheel into the submit button
+		// as the request is being processed.
 		if (!this.l) {
 			this.l = Ladda.create(this.$("#nameBtn").get(0));
 		} else {
@@ -28,7 +40,9 @@ var LoginView = Backbone.View.extend({
 		return this;
 	},
 	onLogin: function() {
+		// Ladda again, starting the animation.
 		this.l.start();
+		// triggering the login event and passing the username data to js/main.js
 		this.vent.trigger("login", this.$('#nameText').val());
 	}
 });
@@ -39,13 +53,17 @@ var HomeView = Backbone.View.extend({
 	events: {
 		'keypress #chatInput': 'chatInputPressed'
 	},
+	// initialized after the 'loginDone' event
 	initialize: function(options) {
 		console.log(options);
+		// passed the viewEventBus
 		this.vent = options.vent;
 
+    // requests to the socketclient
 		var onlineUsers = this.model.get('onlineUsers');
 		var userChats = this.model.get('userChats');
 
+    //sets event listeners on the collections
 		this.listenTo(onlineUsers, "add", this.renderUser, this);
 		this.listenTo(onlineUsers, "remove", this.renderUsers, this);
 		this.listenTo(onlineUsers, "reset", this.renderUsers, this);
@@ -54,6 +72,7 @@ var HomeView = Backbone.View.extend({
 		this.listenTo(userChats, "remove", this.renderChats, this);
 		this.listenTo(userChats, "reset", this.renderChats, this);
 	},
+	// render
 	render: function() {
 		var onlineUsers = this.model.get("onlineUsers");
 		this.$el.html(this.template());
@@ -61,6 +80,7 @@ var HomeView = Backbone.View.extend({
 		this.renderChats();
 		return this;
 	},
+	// renders on events, called just above
 	renderUsers: function() {
 		this.$('#userList').empty();
 		this.model.get("onlineUsers").each(function (user) {

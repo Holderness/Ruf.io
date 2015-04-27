@@ -103,7 +103,7 @@ var MainController = function() {
 		self.homeModel.addChat({sender: "", message: username + " left room." });
 	});
 
-	// adds a new chat message
+	// chat passed from socketclient, adds a new chat message using homeModel method
 	self.appEventBus.on("chatReceived", function(chat) {
 		self.homeModel.addChat(chat);
 	});

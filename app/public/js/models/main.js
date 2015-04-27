@@ -30,7 +30,8 @@ var HomeModel = Backbone.Model.extend({
     }
   },
   addChat: function(chat) {
-    // gets UserChats collection (messages) from defaults, adds new ChatModel (message)
+    // gets UserChats collection (messages) from defaults, appends new ChatModel (message)
+    // this method is called in js/main.js
     this.get('userChats').add(new ChatModel({ sender: chat.sender, message: chat.message }));
   },
 });
